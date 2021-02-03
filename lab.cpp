@@ -35,30 +35,15 @@ std::vector<bool> read_from_file(std::string file_name)
 
 bool write_to_file(std::string file_name, std::vector<bool> f)
 {
-    std::ofstream out;
+    std::fstream fs;  //создание объекта при работе в С++
+    fs.open(file_name, std::fstream::out);  //открытие файла, режим: на запись
+    if (fs.fail()) return false;
 
-    try
-{
-    out.open(file_name);
-    if (!out.good())
-        return false;
+    for (int i = 0; i < f.size(); i++) fs << f[i] << " ";
 
-    // Loop for each value in f vector
-    for (bool b : f)
-    {
-        // write in read-acceptible format (like as read_from_file)
-        out << b << " ";
-    }
-}
-catch (const std::exception& e)
-{
-    // Handle exception and return false (as declared in exam's task)
-    printf_s("Error while writing file\n%s\n", e.what());
-    return false;
-}
+    fs.close();
 
-// return true on successful read
-return true;
+    return true;
 }
 
 std::string table(std::vector<bool> f)
